@@ -1,0 +1,12 @@
+{
+  "name": "monocoque-interiors",
+  "private": true,
+  "scripts": {
+    "dev": "tailwindcss -i css/input.css -o css/styles.css --watch",
+    "build": "tailwindcss -i css/input.css -o css/styles.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "tailwindcss": "^4.1.0"
+  }
+}
