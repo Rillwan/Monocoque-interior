@@ -78,3 +78,9 @@
 .menu-open #nav { background: transparent; border-color: transparent; backdrop-filter: none; }
 .menu-open #nav img { filter: brightness(0) invert(1); }
 .menu-open #menu-btn { color: #fff; border-color: rgb(255 255 255 / 0.5); }
+
+.hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.form-status { margin-top: 1.25rem; padding: 0.85rem 1rem; border-left: 3px solid var(--color-royal); background: #fff; font-size: 0.9rem; line-height: 1.6; }
+.form-status[data-state="ok"] { border-color: #2e9e62; background: #e8f6ee; color: #0f5132; }
+.form-status[data-state="err"] { border-color: #d64550; background: #fdecee; color: #842029; }
+.btn:disabled { opacity: 0.6; cursor: wait; transform: none; }

@@ -47,20 +47,60 @@
     );
   }
 
-  /* ---------- Contact form: WhatsApp / email (static site) ---------- */
+  /* ---------- Contact form: email via PHPMailer (send-contact.php) + WhatsApp ---------- */
   const form = $('#enquiry');
   if (form) {
+    const status = $('#form-status');
+    const sendBtn = $('#send-btn');
+    const waBtn = $('#wa-btn');
+    const stamp = $('#ts');
+    const sendLabel = sendBtn.textContent;
+    if (stamp) stamp.value = String(Date.now());
+
+    const showStatus = (state, message) => {
+      status.dataset.state = state;
+      status.textContent = message;
+      status.hidden = false;
+    };
+
     const text = () => {
       const d = new FormData(form);
       return ['Name: ' + d.get('name'), 'Phone: ' + d.get('phone'), 'Email: ' + (d.get('email') || '-'), 'Project type: ' + d.get('type'), 'Message: ' + (d.get('message') || '-')].join('\n');
     };
-    form.addEventListener('submit', (e) => {
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      window.open('https://wa.me/919072509773?text=' + encodeURIComponent('Hello Monocoque Interiors,\n' + text()), '_blank', 'noopener');
-    });
-    $('#mail-btn').addEventListener('click', () => {
       if (!form.reportValidity()) return;
-      location.href = 'mailto:info@monocoqueinteriors.com?subject=' + encodeURIComponent('Project enquiry') + '&body=' + encodeURIComponent(text());
+      sendBtn.disabled = true;
+      sendBtn.textContent = 'Sending…';
+      status.hidden = true;
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+          credentials: 'same-origin',
+        });
+        let data = null;
+        try { data = await res.json(); } catch (_) { data = null; }
+        if (res.ok && data && data.ok) {
+          form.reset();
+          if (stamp) stamp.value = String(Date.now());
+          showStatus('ok', data.message || 'Thank you! Your message has been sent. We will contact you shortly.');
+        } else {
+          showStatus('err', (data && data.message) || 'Sorry, we could not send your message. Please call us or use WhatsApp.');
+        }
+      } catch (_) {
+        showStatus('err', 'Network problem. Please check your connection and try again, or use WhatsApp.');
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.textContent = sendLabel;
+      }
+    });
+
+    waBtn.addEventListener('click', () => {
+      if (!form.reportValidity()) return;
+      window.open('https://wa.me/919072509773?text=' + encodeURIComponent('Hello Monocoque Interiors,\n' + text()), '_blank', 'noopener');
     });
   }
 

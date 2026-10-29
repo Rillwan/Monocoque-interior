@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /send-contact.php
+Disallow: /phpmailer/
 
 Sitemap: https://monocoqueinteriors.com/sitemap.xml

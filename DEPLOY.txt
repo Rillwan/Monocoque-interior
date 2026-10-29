@@ -1,0 +1,21 @@
+MONOCOQUE INTERIORS - HOSTINGER DEPLOY STEPS
+
+1. hPanel > Websites > Manage > File Manager.
+2. Upload everything in this zip into public_html, EXCEPT:
+   _private/  (see step 3), package.json, css/input.css (development files only).
+3. Upload _private/mail-config.php to the folder ABOVE public_html
+   (e.g. /home/uXXXXXXX/domains/monocoqueinteriors.com/mail-config.php).
+   Open it and put the Google App Password in 'password' (no spaces).
+   Never put this password in any file inside public_html.
+4. hPanel > Advanced > PHP Configuration: choose PHP 8.1 or newer.
+5. hPanel > Security > SSL: make sure the SSL certificate is active.
+6. Open https://monocoqueinteriors.com/contact and send a test message.
+
+If mail-config.php cannot be placed above public_html, put it inside public_html
+next to send-contact.php. It still works; .htaccess blocks direct access.
+
+Google App Password: Google Account (sales@monocoqueindia.com) > Security >
+2-Step Verification (must be ON) > App passwords > create one for "Mail".
+If Gmail SMTP is blocked for the account, use 'port' => 465 and 'secure' => 'ssl'.
+
+Errors are written to the hosting error log (hPanel > Advanced > Error logs).
